@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: gamex-backend
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:gamex}
+    username: ${DB_USER:gamex}
+    password: ${DB_PASSWORD:gamex}
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 20000
+      pool-name: GameXHikariPool
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+
+gamex:
+  jwt:
+    secret: ${JWT_SECRET:changeme-at-least-32-chars-long!!}
+    expiration-ms: 86400000   # 24 h
+
+logging:
+  level:
+    com.gamex: DEBUG
+    org.springframework.security: WARN
